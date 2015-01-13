@@ -211,7 +211,7 @@ static __always_inline void __read_once_size(volatile void *p, void *res, int si
 }
 
 
-static __always_inline void __assign_once_size(volatile void *p, void *res, int size)
+static __always_inline void __write_once_size(volatile void *p, void *res, int size)
 {
 	switch (size) {
 	case 1: *(volatile __u8 *)p = *(__u8 *)res; break;
@@ -233,6 +233,7 @@ static __always_inline void __assign_once_size(volatile void *p, void *res, int 
  * Prevent the compiler from merging or refetching reads or writes. The
  * compiler is also forbidden from reordering successive instances of
 <<<<<<< HEAD
+<<<<<<< HEAD
  * READ_ONCE, WRITE_ONCE and ACCESS_ONCE (see below), but only when the
  * compiler is aware of some particular ordering.  One way to make the
  * compiler aware of ordering is to put the two invocations of READ_ONCE,
@@ -243,15 +244,25 @@ static __always_inline void __assign_once_size(volatile void *p, void *res, int 
  * compiler aware of ordering is to put the two invocations of READ_ONCE,
  * ASSIGN_ONCE or ACCESS_ONCE() in different C statements.
 >>>>>>> c0105d1f8f09... kernel: Provide READ_ONCE and ASSIGN_ONCE
+=======
+ * READ_ONCE, WRITE_ONCE and ACCESS_ONCE (see below), but only when the
+ * compiler is aware of some particular ordering.  One way to make the
+ * compiler aware of ordering is to put the two invocations of READ_ONCE,
+ * WRITE_ONCE or ACCESS_ONCE() in different C statements.
+>>>>>>> 5c49de91d55f... kernel: Change ASSIGN_ONCE(val, x) to WRITE_ONCE(x, val)
  *
  * In contrast to ACCESS_ONCE these two macros will also work on aggregate
  * data types like structs or unions. If the size of the accessed data
  * type exceeds the word size of the machine (e.g., 32 bits or 64 bits)
 <<<<<<< HEAD
+<<<<<<< HEAD
  * READ_ONCE() and WRITE_ONCE()  will fall back to memcpy and print a
 =======
  * READ_ONCE() and ASSIGN_ONCE()  will fall back to memcpy and print a
 >>>>>>> c0105d1f8f09... kernel: Provide READ_ONCE and ASSIGN_ONCE
+=======
+ * READ_ONCE() and WRITE_ONCE()  will fall back to memcpy and print a
+>>>>>>> 5c49de91d55f... kernel: Change ASSIGN_ONCE(val, x) to WRITE_ONCE(x, val)
  * compile-time warning.
  *
  * Their two major use cases are: (1) Mediating communication between
@@ -266,8 +277,8 @@ static __always_inline void __assign_once_size(volatile void *p, void *res, int 
 
 	({ typeof(x) __val; __read_once_size(&x, &__val, sizeof(__val)); __val; })
 
-#define ASSIGN_ONCE(val, x) \
-	({ typeof(x) __val; __val = val; __assign_once_size(&x, &__val, sizeof(__val)); __val; })
+#define WRITE_ONCE(x, val) \
+	({ typeof(x) __val; __val = val; __write_once_size(&x, &__val, sizeof(__val)); __val; })
 
 #endif /* __KERNEL__ */
 
