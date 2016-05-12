@@ -436,6 +436,7 @@ extern struct cpufreq_governor cpufreq_gov_conservative;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE)
 extern struct cpufreq_governor cpufreq_gov_interactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interactive)
+<<<<<<< HEAD
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_IMPULSE)
 extern struct cpufreq_governor cpufreq_gov_impulse;
 #define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_impulse)
@@ -478,6 +479,18 @@ extern struct cpufreq_governor cpufreq_gov_smartassH3;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LULZACTIVE)
 extern struct cpufreq_governor 		cpufreq_gov_lulzactive;
 #define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_lulzactive)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_BLU_ACTIVE)
+extern struct cpufreq_governor cpufreq_gov_blu_active;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_blu_active)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_NIGHTMARE)
+extern struct cpufreq_governor cpufreq_gov_nightmare;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_nightmare)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_DARKNESS)
+extern struct cpufreq_governor cpufreq_gov_darkness;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_darkness)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ALUCARD)
+extern struct cpufreq_governor cpufreq_gov_alucard;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_alucard)
 #endif
 
 /*********************************************************************

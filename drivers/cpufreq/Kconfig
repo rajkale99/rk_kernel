@@ -198,40 +198,25 @@ config CPU_FREQ_DEFAULT_GOV_BARRY_ALLEN
 	  loading your cpufreq low-level hardware driver, using the
 	  'barry_allen' governor for latency-sensitive workloads.
 
-config CPU_FREQ_DEFAULT_GOV_BIOSHOCK
-	bool "BioShock"
-	select CPU_FREQ_GOV_BIOSHOCK
-	help
-	  Default governor of BioShock kernel
-	  
-config CPU_FREQ_DEFAULT_GOV_DYNAMIC_INTERACTIVE
-	bool "dynamic_interactive"
-	select CPU_FREQ_GOV_DYNAMIC_INTERACTIVE
-        help 
+	  Use the CPUFreq governor 'blu_active' as default. This allows
+	  you to get a full dynamic cpu frequency capable system by simply
+	  loading your cpufreq low-level hardware driver, using the
+	  'interactive' governor for latency-sensitive workloads.
 
-config CPU_FREQ_DEFAULT_GOV_TRIPNDROID
-	bool "tripndroid"
-	select CPU_FREQ_GOV_TRIPNDROID
+config CPU_FREQ_DEFAULT_GOV_NIGHTMARE
+	bool "nightmare"
+	select CPU_FREQ_GOV_NIGHTMARE
 	help
-          Select tripndroid cpu governor as default 
 
-config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
-	bool "smartassH3"
-	select CPU_FREQ_GOV_SMARTASSH3
+config CPU_FREQ_DEFAULT_GOV_DARKNESS
+	bool "darkness"
+	select CPU_FREQ_GOV_DARKNESS
 	help
-          Use the CPUFreq governor 'slp' as default. 
 
-config CPU_FREQ_DEFAULT_GOV_MYTHX_PLUG
-	bool "mythx_plug"
-	select CPU_FREQ_GOV_MYTHX_PLUG
-        help
-
-config CPU_FREQ_DEFAULT_GOV_LULZACTIVE
-	bool "lulzactive"
-	select CPU_FREQ_GOV_LULZACTIVE
-	select CPU_FREQ_GOV_PERFORMANCE
+config CPU_FREQ_DEFAULT_GOV_ALUCARD
+	bool "alucard"
+	select CPU_FREQ_GOV_ALUCARD
 	help
-          Use the CPUFreq governor 'lulzactive' as default.
 
 endchoice
 
@@ -406,6 +391,7 @@ config CPU_FREQ_GOV_CONSERVATIVE
 
 	  If in doubt, say N.
 
+<<<<<<< HEAD
 config CPU_FREQ_GOV_BIOSHOCK
 	tristate "'bioshock' cpufreq bioshock"
 	depends on CPU_FREQ
@@ -421,6 +407,20 @@ config CPU_FREQ_GOV_INTELLIACTIVE
 	  This governor attempts to reduce the latency of clock
 	  increases so that the system is more responsive to
 	  interactive workloads.
+config CPU_FREQ_GOV_NIGHTMARE
+	tristate "'nightmare' cpufreq governor"
+	depends on CPU_FREQ
+	select CPU_FREQ_GOV_COMMON
+
+config CPU_FREQ_GOV_DARKNESS
+	tristate "'darkness' cpufreq governor"
+	depends on CPU_FREQ
+	select CPU_FREQ_GOV_COMMON
+
+config CPU_FREQ_GOV_ALUCARD
+	tristate "'alucard' cpufreq governor"
+	depends on CPU_FREQ
+	select CPU_FREQ_GOV_COMMON
 
 config CPU_FREQ_GOV_HYPER
 	tristate "'hyper' cpufreq governor"
