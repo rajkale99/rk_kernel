@@ -68,13 +68,9 @@ zip() {
 }
 
 upload() {
-	cd $ZIP_DIR
-	if [ -a $ZIP_DIR/$(NAME)* ]; then
-		gdrive upload $(NAME)*.zip
-		echo -e "☆☆☆~uploaded☆☆☆"
-	else
-		echo -e "☆☆☆~no zip to upload☆☆☆"
-	fi
+cd $ZIP_DIR
+gdrive upload *.zip
+echo -e "☆☆☆~uploaded☆☆☆"
 }
 
 everything() {
