@@ -2031,7 +2031,8 @@ static inline void ufshcd_copy_sense_data(struct ufshcd_lrb *lrbp)
 
 		memcpy(lrbp->sense_buffer,
 			lrbp->ucd_rsp_ptr->sr.sense_data,
-			min_t(int, len_to_copy, UFSHCD_REQ_SENSE_SIZE));
+
+			min_t(int, len_to_copy, SCSI_SENSE_BUFFERSIZE));
 	}
 }
 
@@ -8418,8 +8419,6 @@ EXPORT_SYMBOL(ufshcd_system_suspend);
 
 int ufshcd_system_resume(struct ufs_hba *hba)
 {
-	int ret = 0;
-	ktime_t start = ktime_get();
 
 	if (!hba)
 		return -EINVAL;
@@ -8450,22 +8449,13 @@ EXPORT_SYMBOL(ufshcd_system_resume);
  */
 int ufshcd_runtime_suspend(struct ufs_hba *hba)
 {
-	int ret = 0;
-	ktime_t start = ktime_get();
 
 	if (!hba)
 		return -EINVAL;
 
 	if (!hba->is_powered)
-		goto out;
-	else
-		ret = ufshcd_suspend(hba, UFS_RUNTIME_PM);
-out:
-	trace_ufshcd_runtime_suspend(dev_name(hba->dev), ret,
-		ktime_to_us(ktime_sub(ktime_get(), start)),
-		hba->curr_dev_pwr_mode,
-		hba->uic_link_state);
-	return ret;
+
+		return 0;
 
 }
 EXPORT_SYMBOL(ufshcd_runtime_suspend);
@@ -8493,145 +8483,15 @@ EXPORT_SYMBOL(ufshcd_runtime_suspend);
  */
 int ufshcd_runtime_resume(struct ufs_hba *hba)
 {
-	int ret = 0;
-	ktime_t start = ktime_get();
 
 	if (!hba)
 		return -EINVAL;
 
 	if (!hba->is_powered)
-		goto out;
-	else
-		ret = ufshcd_resume(hba, UFS_RUNTIME_PM);
-out:
-	trace_ufshcd_runtime_resume(dev_name(hba->dev), ret,
-		ktime_to_us(ktime_sub(ktime_get(), start)),
-		hba->curr_dev_pwr_mode,
-		hba->uic_link_state);
-	return ret;
-}
-EXPORT_SYMBOL(ufshcd_runtime_resume);
 
-int ufshcd_runtime_idle(struct ufs_hba *hba)
-{
-	return 0;
-}
-EXPORT_SYMBOL(ufshcd_runtime_idle);
+		return 0;
 
-static inline ssize_t ufshcd_pm_lvl_store(struct device *dev,
-					   struct device_attribute *attr,
-					   const char *buf, size_t count,
-					   bool rpm)
-{
-	struct ufs_hba *hba = dev_get_drvdata(dev);
-	unsigned long flags, value;
-
-	if (kstrtoul(buf, 0, &value))
-		return -EINVAL;
-
-	if (value >= UFS_PM_LVL_MAX)
-		return -EINVAL;
-
-	spin_lock_irqsave(hba->host->host_lock, flags);
-	if (rpm)
-		hba->rpm_lvl = value;
-	else
-		hba->spm_lvl = value;
-	ufshcd_apply_pm_quirks(hba);
-	spin_unlock_irqrestore(hba->host->host_lock, flags);
-	return count;
-}
-
-static ssize_t ufshcd_rpm_lvl_show(struct device *dev,
-		struct device_attribute *attr, char *buf)
-{
-	struct ufs_hba *hba = dev_get_drvdata(dev);
-	int curr_len;
-	u8 lvl;
-
-	curr_len = snprintf(buf, PAGE_SIZE,
-			    "\nCurrent Runtime PM level [%d] => dev_state [%s] link_state [%s]\n",
-			    hba->rpm_lvl,
-			    ufschd_ufs_dev_pwr_mode_to_string(
-				ufs_pm_lvl_states[hba->rpm_lvl].dev_state),
-			    ufschd_uic_link_state_to_string(
-				ufs_pm_lvl_states[hba->rpm_lvl].link_state));
-
-	curr_len += snprintf((buf + curr_len), (PAGE_SIZE - curr_len),
-			     "\nAll available Runtime PM levels info:\n");
-	for (lvl = UFS_PM_LVL_0; lvl < UFS_PM_LVL_MAX; lvl++)
-		curr_len += snprintf((buf + curr_len), (PAGE_SIZE - curr_len),
-				     "\tRuntime PM level [%d] => dev_state [%s] link_state [%s]\n",
-				    lvl,
-				    ufschd_ufs_dev_pwr_mode_to_string(
-					ufs_pm_lvl_states[lvl].dev_state),
-				    ufschd_uic_link_state_to_string(
-					ufs_pm_lvl_states[lvl].link_state));
-
-	return curr_len;
-}
-
-static ssize_t ufshcd_rpm_lvl_store(struct device *dev,
-		struct device_attribute *attr, const char *buf, size_t count)
-{
-	return ufshcd_pm_lvl_store(dev, attr, buf, count, true);
-}
-
-static void ufshcd_add_rpm_lvl_sysfs_nodes(struct ufs_hba *hba)
-{
-	hba->rpm_lvl_attr.show = ufshcd_rpm_lvl_show;
-	hba->rpm_lvl_attr.store = ufshcd_rpm_lvl_store;
-	sysfs_attr_init(&hba->rpm_lvl_attr.attr);
-	hba->rpm_lvl_attr.attr.name = "rpm_lvl";
-	hba->rpm_lvl_attr.attr.mode = S_IRUGO | S_IWUSR;
-	if (device_create_file(hba->dev, &hba->rpm_lvl_attr))
-		dev_err(hba->dev, "Failed to create sysfs for rpm_lvl\n");
-}
-
-static ssize_t ufshcd_spm_lvl_show(struct device *dev,
-		struct device_attribute *attr, char *buf)
-{
-	struct ufs_hba *hba = dev_get_drvdata(dev);
-	int curr_len;
-	u8 lvl;
-
-	curr_len = snprintf(buf, PAGE_SIZE,
-			    "\nCurrent System PM level [%d] => dev_state [%s] link_state [%s]\n",
-			    hba->spm_lvl,
-			    ufschd_ufs_dev_pwr_mode_to_string(
-				ufs_pm_lvl_states[hba->spm_lvl].dev_state),
-			    ufschd_uic_link_state_to_string(
-				ufs_pm_lvl_states[hba->spm_lvl].link_state));
-
-	curr_len += snprintf((buf + curr_len), (PAGE_SIZE - curr_len),
-			     "\nAll available System PM levels info:\n");
-	for (lvl = UFS_PM_LVL_0; lvl < UFS_PM_LVL_MAX; lvl++)
-		curr_len += snprintf((buf + curr_len), (PAGE_SIZE - curr_len),
-				     "\tSystem PM level [%d] => dev_state [%s] link_state [%s]\n",
-				    lvl,
-				    ufschd_ufs_dev_pwr_mode_to_string(
-					ufs_pm_lvl_states[lvl].dev_state),
-				    ufschd_uic_link_state_to_string(
-					ufs_pm_lvl_states[lvl].link_state));
-
-	return curr_len;
-}
-
-static ssize_t ufshcd_spm_lvl_store(struct device *dev,
-		struct device_attribute *attr, const char *buf, size_t count)
-{
-	return ufshcd_pm_lvl_store(dev, attr, buf, count, false);
-}
-
-static void ufshcd_add_spm_lvl_sysfs_nodes(struct ufs_hba *hba)
-{
-	hba->spm_lvl_attr.show = ufshcd_spm_lvl_show;
-	hba->spm_lvl_attr.store = ufshcd_spm_lvl_store;
-	sysfs_attr_init(&hba->spm_lvl_attr.attr);
-	hba->spm_lvl_attr.attr.name = "spm_lvl";
-	hba->spm_lvl_attr.attr.mode = S_IRUGO | S_IWUSR;
-	if (device_create_file(hba->dev, &hba->spm_lvl_attr))
-		dev_err(hba->dev, "Failed to create sysfs for spm_lvl\n");
+	return ufshcd_resume(hba, UFS_RUNTIME_PM);
 }
 
 static inline void ufshcd_add_sysfs_nodes(struct ufs_hba *hba)
