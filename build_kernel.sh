@@ -3,7 +3,7 @@ echo Welcome To Automated Kernel Compiler For smartron
 echo By rajkale99
 make clean && make mrproper && rm -rf output
 echo Cleaned Some Old Crappy Files
-export CROSS_COMPILE=~/toolchains/bin/aarch64-linux-android-
+export CROSS_COMPILE=~/toolchains/linaro/bin/aarch64-linux-android-
 mkdir output
 echo Compiler Set Sucessful
 export ARCH=arm64
