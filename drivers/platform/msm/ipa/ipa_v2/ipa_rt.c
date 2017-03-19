@@ -1367,7 +1367,6 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 			 */
 			if (tbl->idx == apps_start_idx && tbl->rule_cnt == 1)
 				continue;
-<<<<<<< HEAD
 
 			list_del(&rule->link);
 			tbl->rule_cnt--;
@@ -1381,7 +1380,7 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 
 			/* remove the handle from the database */
 			ipa_id_remove(id);
-=======
+
 			if (!user_only ||
 				rule->ipacm_installed) {
 				list_del(&rule->link);
@@ -1419,7 +1418,6 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 				/* remove the handle from the database */
 				ipa_id_remove(id);
 			}
->>>>>>> ad69a126a375... Merge tag 'LA.UM.7.6.r1-03600-89xx.0' into kernel.lnx.3.18.r34-rel
 		}
 
 		if (ipa_id_find(tbl->id) == NULL) {
