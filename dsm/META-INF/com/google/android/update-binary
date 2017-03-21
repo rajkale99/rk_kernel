@@ -55,7 +55,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.system)" == 1 ]; then
   set_perm_recursive 0 0 0644 0644 /system/lib/modules/pronto/*.ko;
 fi;
 
-ui_print "Installing DSM Kernel...";
+ui_print "Installing RK KERNEL";
 /sbin/sh /tmp/anykernel/anykernel.sh;
 if [ "$(cat /tmp/anykernel/exitcode)" == 1 ]; then
   umount /system;
