@@ -942,6 +942,43 @@ static int device_suspend_noirq(struct device *dev, pm_message_t state)
 	}
 
 	return dpm_run_callback(callback, dev, state, info);
+	error = dpm_run_callback(callback, dev, state, info);
+	if (!error) {
+		dev->power.is_noirq_suspended = true;
+	} else {
+		log_suspend_abort_reason("Callback failed on %s in %pF returned %d",
+					 dev_name(dev), callback, error);
+		async_error = error;
+	}
+Complete:
+	complete_all(&dev->power.completion);
+	return error;
+}
+
+static void async_suspend_noirq(void *data, async_cookie_t cookie)
+{
+	struct device *dev = (struct device *)data;
+	int error;
+
+	error = __device_suspend_noirq(dev, pm_transition, true);
+	if (error) {
+		dpm_save_failed_dev(dev_name(dev));
+		pm_dev_err(dev, pm_transition, " async", error);
+	}
+
+	put_device(dev);
+}
+
+static int device_suspend_noirq(struct device *dev)
+{
+	reinit_completion(&dev->power.completion);
+
+	if (pm_async_enabled && dev->power.async_suspend) {
+		get_device(dev);
+		async_schedule(async_suspend_noirq, dev);
+		return 0;
+	}
+	return __device_suspend_noirq(dev, pm_transition, false);
 }
 
 /**
@@ -1040,6 +1077,13 @@ static int device_suspend_late(struct device *dev, pm_message_t state)
 		 * hence enable runtime_pm now
 		 */
 		pm_runtime_enable(dev);
+	if (!error) {
+		dev->power.is_late_suspended = true;
+	} else {
+		log_suspend_abort_reason("Callback failed on %s in %pF returned %d",
+					 dev_name(dev), callback, error);
+		async_error = error;
+	}
 
 	return error;
 }
@@ -1148,6 +1192,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 	int error = 0;
 	struct dpm_watchdog wd;
 	char suspend_abort[MAX_SUSPEND_ABORT_LEN];
+	DECLARE_DPM_WATCHDOG_ON_STACK(wd);
 
 	dpm_wait_for_children(dev, async);
 
@@ -1164,9 +1209,6 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		pm_wakeup_event(dev, 0);
 
 	if (pm_wakeup_pending()) {
-		pm_get_active_wakeup_sources(suspend_abort,
-			MAX_SUSPEND_ABORT_LEN);
-		log_suspend_abort_reason(suspend_abort);
 		async_error = -EBUSY;
 		goto Complete;
 	}
@@ -1227,6 +1269,19 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		if (dev->power.wakeup_path
 		    && dev->parent && !dev->parent->power.ignore_children)
 			dev->parent->power.wakeup_path = true;
+		if (parent) {
+			spin_lock_irq(&parent->power.lock);
+
+			dev->parent->power.direct_complete = false;
+			if (dev->power.wakeup_path
+			    && !dev->parent->power.ignore_children)
+				dev->parent->power.wakeup_path = true;
+
+			spin_unlock_irq(&parent->power.lock);
+		}
+	} else {
+		log_suspend_abort_reason("Callback failed on %s in %pF returned %d",
+					 dev_name(dev), callback, error);
 	}
 
 	device_unlock(dev);
@@ -1404,6 +1459,9 @@ int dpm_prepare(pm_message_t state)
 			printk(KERN_INFO "PM: Device %s not prepared "
 				"for power transition: code %d\n",
 				dev_name(dev), error);
+			log_suspend_abort_reason("Device %s not prepared "
+						 "for power transition: code %d",
+						 dev_name(dev), error);
 			put_device(dev);
 			break;
 		}

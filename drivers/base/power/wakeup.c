@@ -15,6 +15,7 @@
 #include <linux/seq_file.h>
 #include <linux/debugfs.h>
 #include <linux/types.h>
+#include <linux/wakeup_reason.h>
 #include <trace/events/power.h>
 
 #include "power.h"
@@ -848,6 +849,7 @@ bool pm_wakeup_pending(void)
 {
 	unsigned long flags;
 	bool ret = false;
+	char suspend_abort[MAX_SUSPEND_ABORT_LEN];
 
 	spin_lock_irqsave(&events_lock, flags);
 	if (events_check_enabled) {
@@ -861,6 +863,22 @@ bool pm_wakeup_pending(void)
 
 	if (ret)
 		print_active_wakeup_sources();
+	if (ret) {
+		pr_info("PM: Wakeup pending, aborting suspend\n");
+		pm_get_active_wakeup_sources(suspend_abort,
+					     MAX_SUSPEND_ABORT_LEN);
+		log_suspend_abort_reason(suspend_abort);
+		pr_info("PM: %s\n", suspend_abort);
+	}
+
+	return ret || pm_abort_suspend;
+}
+
+void pm_system_wakeup(void)
+{
+	pm_abort_suspend = true;
+	freeze_wake();
+}
 
 	return ret;
 }
