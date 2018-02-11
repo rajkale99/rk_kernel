@@ -31,7 +31,7 @@ export TZ="Asia/Calcutta"
 KERNEL_DIR=`pwd`
 RESOURCE_DIR="/home/raj/rkkernel/srt"
 ANYKERNEL_DIR="$RESOURCE_DIR/dsm"
-TOOLCHAIN_DIR="/home/raj/toolchain"
+TOOLCHAIN_DIR="/home/raj/toolhain-8.2"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
@@ -49,7 +49,7 @@ function make_zip {
 }
 
 DATE_START=$(date +"%s")
-		echo "Compiling RK-Kernel Using AOSP-4.9 Toolchain"
+		echo "Compiling RK-Kernel Using Ubertc-8.2  Toolchain"
 echo -e "${restore}"
 		make_zip
 

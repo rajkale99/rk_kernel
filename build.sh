@@ -9,7 +9,7 @@ make clean
 make mrproper
 echo Cleaned Some Old Crappy File
 
-export CROSS_COMPILE=/home/raj/uber/bin/aarch64-linux-android-
+export CROSS_COMPILE=/home/raj/toolchain/bin/aarch64-opt-linux-android-
 
 echo Compiler Set Succesfully
 
