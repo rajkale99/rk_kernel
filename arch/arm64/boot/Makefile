@@ -25,7 +25,7 @@ else
 DTB_LIST := $(dtb-y)
 endif
 DTB_OBJS := $(addprefix arch/arm/boot/dts/,$(DTB_LIST))
-+ifeq ("$(wildcard $(DTB_OBJS))","")
+ifeq ("$(wildcard $(DTB_OBJS))","")
 DTB_OBJS := $(addprefix $(obj)/dts/,$(DTB_LIST))
 endif
 

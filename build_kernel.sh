@@ -11,4 +11,6 @@ echo Compiler Set To Build For ARM64
 make -C $(pwd) O=output msm-perf_defconfig
 echo Picked Stock Config
 make -j16 -C $(pwd) O=output
+make -j16 -C $(pwd) modules
+make -j16 -C $(pwd) modules_install
 echo Building Has Been Completed
