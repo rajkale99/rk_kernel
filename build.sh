@@ -18,7 +18,7 @@ KERNEL="Image.gz-dtb"
 # DSM Kernel Details
 BASE_VER="RK-KERNEL-OREO"
 VER="-$(date +"%Y-%m-%d"-%H%M)"
-K_VER="$BASE_VER$VER-land"
+K_VER="$BASE_VER$VER-rimo02a"
 
 # Vars
 export ARCH=arm64
@@ -29,9 +29,9 @@ export TZ="Asia/Calcutta"
 
 # Paths
 KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/rajkale99_rk/rkoreo"
+RESOURCE_DIR="/home/rajkale99_rk/rkkernel"
 ANYKERNEL_DIR="$RESOURCE_DIR/dsm"
-TOOLCHAIN_DIR="/home/rajkale99_rk/toolchains"
+TOOLCHAIN_DIR="/home/rajkale99_rk/toolchains/linaro"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
