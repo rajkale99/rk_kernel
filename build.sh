@@ -15,7 +15,7 @@ THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 DEFCONFIG="msm-perf_defconfig"
 KERNEL="Image.gz-dtb"
 
-# DSM Kernel Details
+# RK Kernel Details
 BASE_VER="RK-KERNEL-OREO"
 VER="-$(date +"%Y-%m-%d"-%H%M)"
 K_VER="$BASE_VER$VER-rimo02a"
@@ -29,9 +29,9 @@ export TZ="Asia/Calcutta"
 
 # Paths
 KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/rajkale99_rk/rkkernel"
+RESOURCE_DIR="/home/rajkalerk99/rkkernel"
 ANYKERNEL_DIR="$RESOURCE_DIR/dsm"
-TOOLCHAIN_DIR="/home/rajkale99_rk/toolchains/linaro"
+TOOLCHAIN_DIR="/home/rajkalerk99/toolchains/linaro"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
@@ -67,23 +67,9 @@ function make_zip {
 }
 
 DATE_START=$(date +"%s")
-
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/bin/aarch64-linux-android-
-		export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/lib/
-                STRIP=$TOOLCHAIN_DIR/bin/aarch64-linux-android-strip
-		rm -rf $MODULES_DIR/*
-		rm -rf $ZIP_MOVE/*
-		cd $ANYKERNEL_DIR
-		rm -rf zImage
-                cd $KERNEL_DIR
-		make clean && make mrproper
-		echo "cleaned directory"
 		echo "Compiling RK-Kernel Using AOSP-4.9 Toolchain"
-
+		rm $ANYKERNEL_DIR/zImage
 echo -e "${restore}"
-
-		make_kernel
-                make_modules
 		make_zip
 
 echo -e "${green}"
