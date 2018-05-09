@@ -1,0 +1,4 @@
+config TOUCHSCREEN_FT5X06_RIMO02A
+	tristate "FT5X06 touchpanel driver for rimo02a"
+	depends on CONFIG_INPUT_TOUCHSCREEN
+	default n
