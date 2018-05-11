@@ -12,11 +12,11 @@
  */
 
 /dts-v1/;
-#include "msm8976-v1.1.dtsi"
-#include "msm8976-rimosrt.dtsi"
+#include "msm8976.dtsi"
+#include "rimo02a/msm8976-rimo02a.dtsi"
 
 / {
-	model = "Smartron India Pvt. Ltd. - T5524 tphone";
+	model = "Smartron India Pvt. Ltd. - T5524(v1.0) tphone";
 	compatible = "qcom,msm8976-qrd", "qcom,msm8976", "qcom,qrd";
 	qcom,board-id= <0xb 0>, <0x1000b 0>, <0x2000b 0>, <0x2010b 0>, <0x3000b 0>, <0x4000b 0>;
 };
