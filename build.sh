@@ -14,9 +14,9 @@ echo Picked Stock Config
 make -j16 -C $(pwd) O=output
 cp ~/rkkernel/output/arch/arm64/boot/Image.gz-dtb ~/rkkernel/dsm
 mv ~/rkkernel/dsm/Image.gz-dtb ~/rkkernel/dsm/zImage
-cd ~/rkkernel/output && mkdir -p mod/
-find ~/rkkernel/output -name '*.ko' -exec cp {} mod/ \;
-cd ~/rkkernel/output/mod
+cd ~/rkkernel/output && mkdir -p modules/
+find ~/rkkernel/output -name '*.ko' -exec cp {} modules/ \;
+cd ~/rkkernel/output/modules
 ~/toolchains/linaro/bin/aarch64-linux-android-strip --strip-unneeded *.ko && mkdir pronto && cp -a wlan.ko pronto_wlan.ko && mv pronto_wlan.ko pronto
-mv ~/rkkernel/output/mod/ ~/rkkernel/dsm
+mv ~/rkkernel/output/modules/ ~/rkkernel/dsm
 echo Building Has Been Completed
