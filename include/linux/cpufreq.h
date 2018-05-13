@@ -469,9 +469,6 @@ extern struct cpufreq_governor cpufreq_gov_dynamic_interactive;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_TRIPNDROID)
 extern struct cpufreq_governor cpufreq_gov_tripndroid;
 #define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_tripndroid)
-#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_XPERIENCE)
-extern struct cpufreq_governor cpufreq_gov_xperience;
-#define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_xperience)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ELECTRODEMAND)
 extern struct cpufreq_governor cpufreq_gov_dynamic_electrodemand;
 #define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_electrodemand)

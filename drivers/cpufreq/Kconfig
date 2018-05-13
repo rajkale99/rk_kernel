@@ -215,12 +215,6 @@ config CPU_FREQ_DEFAULT_GOV_TRIPNDROID
 	help
           Select tripndroid cpu governor as default 
 
-config CPU_FREQ_DEFAULT_GOV_XPERIENCE
-	bool "xperience"
-	select CPU_FREQ_GOV_XPERIENCE
-	help
-          Use the CPUfreq governor 'xperience' as default. 
-
 config CPU_FREQ_DEFAULT_GOV_ELECTRODEMAND
 	bool "electrodemand"
         select CPU_FREQ_GOV_ELECTRODEMAND 
@@ -477,12 +471,6 @@ config CPU_FREQ_GOV_TRIPNDROID
 	  Custom cpu governor designed specificly for multi cpu mobile devices.
 	  Aiming at a balance between performance and battery lifetime, but it
 	  hangs a little bit more towards performance at low latencys.
-
-config CPU_FREQ_GOV_XPERIENCE
-	 tristate "'xperience' cpufreq governor"
-	 depends on CPU_FREQ
-	 help
-           'XPerience' - a "powered and smart" governor 
 
 config CPU_FREQ_GOV_ELECTRODEMAND
  	tristate "'electrodemand' cpufreq policy governor"
