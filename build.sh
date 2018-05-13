@@ -1,85 +1,22 @@
 #!/bin/bash
-rm .version
-# Bash Color
-green='\033[01;32m'
-red='\033[01;31m'
-cyan='\033[01;36m'
-blue='\033[01;34m'
-blink_red='\033[05;31m'
-restore='\033[0m'
-
-clear
-
-# Resources
-THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
-DEFCONFIG="msm-perf_defconfig"
-KERNEL="Image.gz-dtb"
-
-# RK Kernel Details
-BASE_VER="RK-KERNEL-OREO"
-VER="-$(date +"%Y-%m-%d"-%H%M)"
-K_VER="$BASE_VER$VER-rimo02a"
-
-# Vars
+echo Welcome To Automated Kernel Compiler For smartron
+echo By rajkale99
+make clean && make mrproper && rm -rf output && rm -rf dsm/modules
+echo Cleaned Some Old Crappy Files
+export CROSS_COMPILE=~/toolchains/linaro/bin/aarch64-linux-android-
+mkdir output && mkdir mod && mkdir -p output/mod
+echo Compiler Set Sucessful
 export ARCH=arm64
-export SUBARCH=arm64
-export KBUILD_BUILD_USER="rajkale99"
-export KBUILD_BUILD_HOST="RAJ"
-export TZ="Asia/Calcutta"
-
-# Paths
-KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/rajkalerk99/rkkernel"
-ANYKERNEL_DIR="$RESOURCE_DIR/dsm"
-TOOLCHAIN_DIR="/home/rajkalerk99/toolchains/linaro"
-REPACK_DIR="$ANYKERNEL_DIR"
-PATCH_DIR="$ANYKERNEL_DIR/patch"
-MODULES_DIR="$ANYKERNEL_DIR/modules"
-ZIP_MOVE="$RESOURCE_DIR/kernel_out"
-ZIMAGE_DIR="$KERNEL_DIR/arch/arm64/boot"
-
-
-# Functions
-function make_kernel {
-		make $DEFCONFIG $THREAD
-                make savedefconfig
-		make $KERNEL $THREAD
-                make dtbs $THREAD
-		cp -vr $ZIMAGE_DIR/$KERNEL $REPACK_DIR/zImage
-}
-
-function make_modules {
-		cd $KERNEL_DIR
-		make modules $THREAD
-                mkdir $MODULES_DIR
-		find $KERNEL_DIR -name '*.ko' -exec cp {} $MODULES_DIR/ \;
-		cd $MODULES_DIR
-        $STRIP --strip-unneeded *.ko && mkdir pronto && cp -a wlan.ko pronto_wlan.ko && mv pronto_wlan.ko pronto
-        cd $KERNEL_DIR
-}
-
-function make_zip {
-		cd $REPACK_DIR
-                zip -r `echo $K_VER`.zip *
-                mkdir $ZIP_MOVE
-		mv  `echo $K_VER`.zip $ZIP_MOVE
-		cd $KERNEL_DIR
-}
-
-DATE_START=$(date +"%s")
-		echo "Compiling RK-Kernel Using AOSP-4.9 Toolchain"
-		rm $ANYKERNEL_DIR/zImage
-echo -e "${restore}"
-		make_zip
-
-echo -e "${green}"
-echo $K_VER.zip
-echo "------------------------------------------"
-echo -e "${restore}"
-
-DATE_END=$(date +"%s")
-DIFF=$(($DATE_END - $DATE_START))
-echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
-echo " "
-cd $ZIP_MOVE
-ls
+echo Compiler Set To Build For ARM64
+make -C $(pwd) O=output msm-perf_defconfig
+make -C $(pwd) O=output menuconfig
+echo Picked Stock Config
+make -j16 -C $(pwd) O=output
+cp ~/rkkernel/output/arch/arm64/boot/Image.gz-dtb ~/rkkernel/dsm
+mv ~/rkkernel/dsm/Image.gz-dtb ~/rkkernel/dsm/zImage
+cd ~/rkkernel/output && mkdir -p mod/
+find ~/rkkernel/output -name '*.ko' -exec cp {} mod/ \;
+cd ~/rkkernel/output/mod
+~/toolchains/linaro/bin/aarch64-linux-android-strip --strip-unneeded *.ko && mkdir pronto && cp -a wlan.ko pronto_wlan.ko && mv pronto_wlan.ko pronto
+mv ~/rkkernel/output/mod/ ~/rkkernel/dsm
+echo Building Has Been Completed
