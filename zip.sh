@@ -40,24 +40,6 @@ ZIMAGE_DIR="$KERNEL_DIR/arch/arm64/boot"
 
 
 # Functions
-function make_kernel {
-		make $DEFCONFIG $THREAD
-                make savedefconfig
-		make $KERNEL $THREAD
-                make dtbs $THREAD
-		cp -vr $ZIMAGE_DIR/$KERNEL $REPACK_DIR/zImage
-}
-
-function make_modules {
-		cd $KERNEL_DIR
-		make modules $THREAD
-                mkdir $MODULES_DIR
-		find $KERNEL_DIR -name '*.ko' -exec cp {} $MODULES_DIR/ \;
-		cd $MODULES_DIR
-        $STRIP --strip-unneeded *.ko && mkdir pronto && cp -a wlan.ko pronto_wlan.ko && mv pronto_wlan.ko pronto
-        cd $KERNEL_DIR
-}
-
 function make_zip {
 		cd $REPACK_DIR
                 zip -r `echo $K_VER`.zip *
@@ -68,7 +50,6 @@ function make_zip {
 
 DATE_START=$(date +"%s")
 		echo "Compiling RK-Kernel Using AOSP-4.9 Toolchain"
-		rm $ANYKERNEL_DIR/zImage
 echo -e "${restore}"
 		make_zip
 
