@@ -1,10 +1,10 @@
 #!/bin/bash
 echo Welcome To Automated Kernel Compiler For smartron
 echo By rajkale99
-make clean && make mrproper && rm -rf output && rm -rf dsm/modules
+make clean && make mrproper && rm -rf output && rm -rf dsm/modules && rm -rf dsm/zImage
 echo Cleaned Some Old Crappy Files
 export CROSS_COMPILE=~/toolchains/linaro/bin/aarch64-linux-android-
-mkdir output && mkdir mod && mkdir -p output/mod
+mkdir output && mkdir modules && mkdir -p output/modules
 echo Compiler Set Sucessful
 export ARCH=arm64
 echo Compiler Set To Build For ARM64
