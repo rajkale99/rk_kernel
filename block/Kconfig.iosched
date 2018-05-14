@@ -79,8 +79,6 @@ config CFQ_GROUP_IOSCHED
 	---help---
 	  Enable group IO scheduling in CFQ.
 
-<<<<<<< HEAD
-=======
 config IOSCHED_BFQ
 	tristate "BFQ I/O scheduler"
 	default n
