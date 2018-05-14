@@ -215,10 +215,6 @@ config CPU_FREQ_DEFAULT_GOV_TRIPNDROID
 	help
           Select tripndroid cpu governor as default 
 
-config CPU_FREQ_DEFAULT_GOV_ELECTRODEMAND
-	bool "electrodemand"
-        select CPU_FREQ_GOV_ELECTRODEMAND 
-
 config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
 	bool "smartassH3"
 	select CPU_FREQ_GOV_SMARTASSH3
@@ -471,10 +467,6 @@ config CPU_FREQ_GOV_TRIPNDROID
 	  Custom cpu governor designed specificly for multi cpu mobile devices.
 	  Aiming at a balance between performance and battery lifetime, but it
 	  hangs a little bit more towards performance at low latencys.
-
-config CPU_FREQ_GOV_ELECTRODEMAND
- 	tristate "'electrodemand' cpufreq policy governor"
-        depends on CPU_FREQ
 
 config CPU_FREQ_GOV_SMARTASSH3
 	tristate "'smartassH3' cpufreq governor"
