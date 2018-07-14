@@ -12,7 +12,7 @@ clear
 
 # Resources
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
-DEFCONFIG="msm-perf_defconfig"
+DEFCONFIG="rk_defconfig"
 KERNEL="Image.gz-dtb"
 
 # RK Kernel Details
@@ -29,9 +29,9 @@ export TZ="Asia/Calcutta"
 
 # Paths
 KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/rajkalerk99/rkkernel"
+RESOURCE_DIR="/home/rajkale99/rkoreo"
 ANYKERNEL_DIR="$RESOURCE_DIR/dsm"
-TOOLCHAIN_DIR="/home/rajkalerk99/toolchains/linaro"
+TOOLCHAIN_DIR="/home/rajkale99/toolchains/ubertc"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
