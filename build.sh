@@ -5,7 +5,7 @@ echo By rajkale99
 echo Cleaning some old files
 
 rm -rf /home/raj/rkkernel/srt/output
-rm -rf /home/raj/rkkernel/srt/dsm/modules
+
 rm -rf /home/raj/rkkernel/srt/dsm/zImage
 make clean
 make mrproper
@@ -32,11 +32,4 @@ make -j4 -C  $(pwd) O=output rk_defconfig
 echo Compiling awesomeness
 
 make -j4 -C $(pwd) O=output
-
-echo making some required directories
-
-mkdir /home/raj/rkkernel/srt/output
-mkdir /home/raj/rkkernel/srt/output/modules
-mkdir /home/raj/rkkernel/srt/dsm/modules
-
 echo Building Has Been Completed

@@ -29,9 +29,9 @@ export TZ="Asia/Calcutta"
 
 # Paths
 KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/rajkale99/rkoreo"
+RESOURCE_DIR="/home/raj/rkkernel/srt"
 ANYKERNEL_DIR="$RESOURCE_DIR/dsm"
-TOOLCHAIN_DIR="/home/rajkale99/toolchains/ubertc"
+TOOLCHAIN_DIR="/home/raj/toolchain"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
