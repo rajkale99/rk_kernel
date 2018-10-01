@@ -10,7 +10,7 @@ cd /home/raj/rkkernel/srt/output
 find /home/raj/rkkernel/srt/output -name '*.ko' -exec cp {} modules/ \;
 cd
 cd /home/raj/rkkernel/srt/output/modules
-/home/raj/toolchain/bin/aarch64-opt-linux-android-strip --strip-unneeded *.ko
+/home/raj/tc/bin/aarch64-opt-linux-android-strip --strip-unneeded *.ko
 cp -a  wlan.ko pronto_wlan.ko
 mkdir pronto
 mv pronto_wlan.ko pronto
