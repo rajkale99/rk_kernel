@@ -3,14 +3,11 @@ echo Welcome To Automated Kernel Compiler For smartron
 echo By rajkale99
 
 echo Cleaning some old files
-
-rm -rf /home/raj/rkkernel/srt/output
-
+rm -rf /home/raj/rkkernel/outpu/
 rm -rf /home/raj/rkkernel/srt/dsm/zImage
 make clean
 make mrproper
-
-echo Cleaned Some Old Crappy Files
+echo Cleaned Some Old Crappy File
 
 export CROSS_COMPILE=/home/raj/uber/bin/aarch64-linux-android-
 

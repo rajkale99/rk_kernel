@@ -48,6 +48,10 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 	if (dbs_data->cdata->governor == GOV_ONDEMAND) {
 		struct od_cpu_dbs_info_s *od_dbs_info =
 				dbs_data->cdata->get_cpu_dbs_info_s(cpu);
+
+		sampling_rate = od_tuners->sampling_rate;
+		sampling_rate *= od_dbs_info->rate_mult;
+
 		ignore_nice = od_tuners->ignore_nice_load;
 	} else if (dbs_data->cdata->governor == GOV_ELEMENTALX) {
 		ignore_nice = ex_tuners->ignore_nice_load;
@@ -61,6 +65,7 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 		sampling_rate = nm_tuners->sampling_rate;
 		ignore_nice = nm_tuners->ignore_nice_load;
 	} else {
+		sampling_rate = cs_tuners->sampling_rate;
 		ignore_nice = cs_tuners->ignore_nice_load;
 	}
 
@@ -115,7 +120,7 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 		if (unlikely(!wall_time || wall_time < idle_time))
 			continue;
 
-		load = 100 * (wall_time - idle_time) / wall_time;
+		load = 100 * (wall_time - idle_time) / wall time;
 
 		/*
 		 * Send govinfo notification.
@@ -206,27 +211,23 @@ static void set_sampling_rate(struct dbs_data *dbs_data,
 {
 	if (dbs_data->cdata->governor == GOV_CONSERVATIVE) {
 		struct cs_dbs_tuners *cs_tuners = dbs_data->tuners;
-		cs_tuners->sampling_rate = sampling_rate;
-	} else if (dbs_data->cdata->governor == GOV_ELEMENTALX) {
-		struct ex_dbs_tuners *ex_tuners = dbs_data->tuners;
-		ex_tuners->sampling_rate = sampling_rate;
 		cs_tuners->sampling_rate = max(cs_tuners->sampling_rate,
 			sampling_rate);
 	} else if (dbs_data->cdata->governor == GOV_ALUCARD) {
 		struct ac_dbs_tuners *ac_tuners = dbs_data->tuners;
-		ac_tuners->sampling_rate = max(ac_tuners->sampling_rate, 
+		ac_tuners->sampling_rate = max(ac_tuners->sampling_rate,
 			sampling_rate);
 	} else if (dbs_data->cdata->governor == GOV_DARKNESS) {
 		struct dk_dbs_tuners *dk_tuners = dbs_data->tuners;
-		dk_tuners->sampling_rate = max(dk_tuners->sampling_rate, 
+		dk_tuners->sampling_rate = max(dk_tuners->sampling_rate,
 			sampling_rate);
 	} else if (dbs_data->cdata->governor == GOV_NIGHTMARE) {
 		struct nm_dbs_tuners *nm_tuners = dbs_data->tuners;
-		nm_tuners->sampling_rate = max(nm_tuners->sampling_rate, 
+		nm_tuners->sampling_rate = max(nm_tuners->sampling_rate,
 			sampling_rate);
 	} else {
 		struct od_dbs_tuners *od_tuners = dbs_data->tuners;
-		od_tuners->sampling_rate = max(od_tuners->sampling_rate, 
+		od_tuners->sampling_rate = max(od_tuners->sampling_rate,
 			sampling_rate);
 	}
 }

@@ -170,6 +170,8 @@ struct ex_cpu_dbs_info_s {
 	struct cpu_dbs_common_info cdbs;
 	unsigned int down_floor;
 	unsigned int enable:1;
+};
+
 struct ac_cpu_dbs_info_s {
 	struct cpu_dbs_common_info cdbs;
 	struct cpufreq_frequency_table *freq_table;
@@ -215,7 +217,9 @@ struct ex_dbs_tuners {
 	unsigned int down_differential;
 	unsigned int active_floor_freq;
 	unsigned int sampling_down_factor;
-	unsigned int powersave ;
+	unsigned int powersave;
+};
+
 struct ac_dbs_tuners {
 	unsigned int ignore_nice_load;
 	unsigned int sampling_rate;
