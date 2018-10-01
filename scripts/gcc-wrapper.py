@@ -1,7 +1,7 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2012, 2015, The Linux Foundation. All rights reserved.
+# Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -41,16 +41,7 @@ import subprocess
 
 allowed_warnings = set([
     "return_address.c:63",
-    "kprobes.c:1493",
-    "rcutree.c:1614",
-    "af_unix.c:893",
-    "nl80211.c:58",
-    "jhash.h:137",
-    "cmpxchg.h:162",
-    "ping.c:87",
-    "nfnetlink_queue_core.c:264",
-    "nfnetlink_queue_core.c:265",
-    "irq.c:159",
+    "clkdev.c:47",
  ])
 
 # Capture the name of the object file, can find it.
