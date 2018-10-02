@@ -274,6 +274,7 @@ config GENERIC_CPUFREQ_CPU0
 	  systems which share clock and voltage across all CPUs.
 
 	  If in doubt, say N.
+
 config CPU_FREQ_GOV_ELECTRON
 	tristate "'electron' cpufreq governor"
 	depends on CPU_FREQ
