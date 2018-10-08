@@ -44,12 +44,15 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.initd)" == 1 ]; then
 fi;
 
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.system)" == 1 ]; then
-  ui_print "Pushing System files...";
+  ui_print "Pushing Modules and Darkness control app";
   #cp -fr /tmp/anykernel/system/* /system/;
   rm -rf /system/lib/modules/;
   mkdir /system/lib/modules/;
   set_perm_recursive 0 0 0755 0755 /system/lib/modules/;
   cp -a /tmp/anykernel/modules/* /system/lib/modules/;
+  cp -a /tmp/anykernel/system/* /system/priv-app/Darkness-control/;
+  set_perm_recursive 0 0 0755 0755 /system/priv-app/Darkness-control;
+  set_perm_recursive 0 0 0644 0644 /system/priv-app/Darkness-control/*.apk;
   set_perm_recursive 0 0 0755 0755 /system/lib/modules/pronto;
   set_perm_recursive 0 0 0644 0644 /system/lib/modules/*ko;
   set_perm_recursive 0 0 0644 0644 /system/lib/modules/pronto/*.ko;
@@ -70,8 +73,3 @@ umount /system;
 ui_print " ";
 ui_print "Done!";
 ui_print " ";
-ui_print(" * Installing Darkness Control Kernel Manager");
-package_extract_dir("system", "/system");
-ui_print(" * Setting permissions");
-set_perm_recursive(0, 0, 0755, 0644, "/system/priv-app/Darkness-control");
-ui_print(" * App installed successfuly");

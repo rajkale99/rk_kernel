@@ -3,17 +3,17 @@ echo Welcome To Automated Kernel Compiler For smartron
 echo By rajkale99
 
 echo Cleaning some old files
-rm -rf /home/raj/test/output
-rm -rf /home/raj/test/dsm/zImage
+rm -rf /home/rajkale99/test/output
+rm -rf /home/rajkale99/test/dsm/zImage
 make clean
 make mrproper
 echo Cleaned Some Old Crappy File
 
-export CROSS_COMPILE=/home/raj/uber4.9/bin/aarch64-linux-android-
+export CROSS_COMPILE=/home/rajkale99/google4.9/bin/aarch64-linux-android-
 
 echo Compiler Set Succesfully
 
-mkdir /home/raj/test/output
+mkdir /home/rajkale99/test/output
 
 echo Setting Compiler To Build For ARM64
 
@@ -28,5 +28,5 @@ make -j4 -C $(pwd) O=output rk_defconfig
 
 echo Compiling awesomeness
 
-make -j4 -C $(pwd) O=output
+make -j32 -C $(pwd) O=output
 echo Building Has Been Completed
