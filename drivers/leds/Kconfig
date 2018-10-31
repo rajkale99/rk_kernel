@@ -295,11 +295,9 @@ config LEDS_PCA963X
 	depends on LEDS_CLASS
 	depends on I2C
 	help
-<<<<<<< HEAD
 	  This option enables support for LEDs connected to the PCA963x
 	  LED driver chip accessed via the I2C bus. Supported
 	  devices include PCA9633 and PCA9634
-=======
 	  This option enables support for LEDs connected to the PCA9633
 	  LED driver chip accessed via the I2C bus.
 
@@ -340,7 +338,6 @@ config LEDS_QPNP_WLED
 
 	  To compile this driver as a module, choose M here: the module will
 	  be called leds-qpnp-wled.
->>>>>>> 951d300eecf7... drivers: leds: Import ktd driver
 
 config LEDS_PCA9956B
 	tristate "LED Support for PCA9956B I2C chips"

@@ -521,7 +521,7 @@
 		      <0x78c5010 0x4>,
 		      <0x7885010 0x4>;
 		reg-names = "wrapper-mux", "wrapper-lockaccess", "usbbam-mux",
-				"blsp-mux";
+		            "blsp-mux";
 		coresight-id = <31>;
 		coresight-name = "coresight-hwevent";
 		coresight-nr-inports = <0>;
