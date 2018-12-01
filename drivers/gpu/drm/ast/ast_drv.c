@@ -76,6 +76,8 @@ static void ast_kick_out_firmware_fb(struct pci_dev *pdev)
 	primary = pdev->resource[PCI_ROM_RESOURCE].flags & IORESOURCE_ROM_SHADOW;
 #endif
 	drm_fb_helper_remove_conflicting_framebuffers(ap, "astdrmfb", primary);
+
+	remove_conflicting_framebuffers(ap, "astdrmfb", primary);
 	kfree(ap);
 }
 
