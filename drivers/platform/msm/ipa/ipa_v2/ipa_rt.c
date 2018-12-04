@@ -1323,6 +1323,8 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 	struct ipa_rt_entry *rule_next;
 	struct ipa_rt_tbl_set *rset;
 	u32 apps_start_idx;
+	struct ipa_hdr_entry *hdr_entry;
+	struct ipa_hdr_proc_ctx_entry *hdr_proc_entry;
 	int id;
 
 	if (ip >= IPA_IP_MAX) {
@@ -1365,6 +1367,7 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 			 */
 			if (tbl->idx == apps_start_idx && tbl->rule_cnt == 1)
 				continue;
+<<<<<<< HEAD
 
 			list_del(&rule->link);
 			tbl->rule_cnt--;
@@ -1378,6 +1381,45 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 
 			/* remove the handle from the database */
 			ipa_id_remove(id);
+=======
+			if (!user_only ||
+				rule->ipacm_installed) {
+				list_del(&rule->link);
+				if (rule->hdr) {
+					hdr_entry = ipa_id_find(
+						rule->rule.hdr_hdl);
+					if (!hdr_entry ||
+					hdr_entry->cookie != IPA_HDR_COOKIE) {
+						IPAERR_RL(
+						"Header already deleted\n");
+						return -EINVAL;
+					}
+				} else if (rule->proc_ctx) {
+					hdr_proc_entry =
+						ipa_id_find(
+						rule->rule.hdr_proc_ctx_hdl);
+					if (!hdr_proc_entry ||
+						hdr_proc_entry->cookie !=
+							IPA_PROC_HDR_COOKIE) {
+					IPAERR_RL(
+						"Proc entry already deleted\n");
+						return -EINVAL;
+					}
+				}
+				tbl->rule_cnt--;
+				if (rule->hdr)
+					__ipa_release_hdr(rule->hdr->id);
+				else if (rule->proc_ctx)
+					__ipa_release_hdr_proc_ctx(
+						rule->proc_ctx->id);
+				rule->cookie = 0;
+				id = rule->id;
+				kmem_cache_free(ipa_ctx->rt_rule_cache, rule);
+
+				/* remove the handle from the database */
+				ipa_id_remove(id);
+			}
+>>>>>>> ad69a126a375... Merge tag 'LA.UM.7.6.r1-03600-89xx.0' into kernel.lnx.3.18.r34-rel
 		}
 
 		if (ipa_id_find(tbl->id) == NULL) {
