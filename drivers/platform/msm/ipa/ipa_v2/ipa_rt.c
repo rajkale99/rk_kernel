@@ -1323,8 +1323,6 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 	struct ipa_rt_entry *rule_next;
 	struct ipa_rt_tbl_set *rset;
 	u32 apps_start_idx;
-	struct ipa_hdr_entry *hdr_entry;
-	struct ipa_hdr_proc_ctx_entry *hdr_proc_entry;
 	int id;
 
 	if (ip >= IPA_IP_MAX) {
@@ -1418,6 +1416,7 @@ int ipa2_reset_rt(enum ipa_ip_type ip)
 				/* remove the handle from the database */
 				ipa_id_remove(id);
 			}
+
 		}
 
 		if (ipa_id_find(tbl->id) == NULL) {

@@ -1629,8 +1629,6 @@ int ipa3_reset_rt(enum ipa_ip_type ip)
 	struct ipa3_rt_entry *rule;
 	struct ipa3_rt_entry *rule_next;
 	struct ipa3_rt_tbl_set *rset;
-	struct ipa3_hdr_entry *hdr_entry;
-	struct ipa3_hdr_proc_ctx_entry *hdr_proc_entry;
 	u32 apps_start_idx;
 	int id;
 
@@ -1727,6 +1725,7 @@ int ipa3_reset_rt(enum ipa_ip_type ip)
 				/* remove the handle from the database */
 				ipa3_id_remove(id);
 			}
+
 		}
 
 		if (ipa3_id_find(tbl->id) == NULL) {
