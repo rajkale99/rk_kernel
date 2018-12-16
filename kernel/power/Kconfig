@@ -329,7 +329,6 @@ config SUSPEND_TIME
 config DEDUCE_WAKEUP_REASONS
 	bool
 	default n
-<<<<<<< HEAD
 
 config SUSPEND_WATCHDOG
 	bool "Suspend watchdog timer support"

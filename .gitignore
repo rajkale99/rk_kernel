@@ -96,5 +96,6 @@ x509.genkey
 
 # Kconfig presets
 all.config
-
-build.sh
+Buildlog.txt
+output/
+zucc.sh
