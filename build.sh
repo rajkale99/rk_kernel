@@ -71,12 +71,12 @@ cd $KERNEL_DIR
 export CROSS_COMPILE=$TOOL_DIR/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export ARCH=arm64
 export SUBARCH=arm64
-export KBUILD_BUILD_USER="Goodboyo"
-export KBUILD_BUILD_HOST="loss"
+export KBUILD_BUILD_USER="RAJKALE99"
+export KBUILD_BUILD_HOST="RK_Kernel"
 
 #Misc
-CONFIG=zucc_defconfig
-THREAD="-j4"
+CONFIG=rk_defconfig
+THREAD="-j8"
 
 #begin functions
 makekornel()
