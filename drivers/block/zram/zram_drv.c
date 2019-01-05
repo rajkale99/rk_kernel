@@ -1231,13 +1231,17 @@ static struct attribute_group zram_disk_attr_group = {
 	.attrs = zram_disk_attrs,
 };
 
-
 static const struct attribute_group *zram_disk_attr_groups[] = {
 	&zram_disk_attr_group,
 	NULL,
 };
 
-static int create_device(struct zram *zram, int device_id)
+/*
+ * Allocate and initialize new zram device. the function returns
+ * '>= 0' device_id upon success, and negative value otherwise.
+ */
+
+static int zram_add(void)
 {
 	struct zram *zram;
 	struct request_queue *queue;
@@ -1344,6 +1348,10 @@ static int zram_remove(struct zram *zram)
 		mutex_unlock(&bdev->bd_mutex);
 		bdput(bdev);
 		return -EBUSY;
+	}
+
+	zram->claim = true;
+	mutex_unlock(&bdev->bd_mutex);
 
 	/*
 	 * Remove sysfs first, so no one will perform a disksize
@@ -1352,6 +1360,17 @@ static int zram_remove(struct zram *zram)
 	 * ->init_lock, no later/concurrent disksize_store() or any
 	 * other sysfs handlers are possible.
 	 */
+
+	/* Make sure all the pending I/O are finished */
+	fsync_bdev(bdev);
+	zram_reset_device(zram);
+	bdput(bdev);
+
+	pr_info("Removed device: %s\n", zram->disk->disk_name);
+
+	idr_remove(&zram_index_idr, zram->disk->first_minor);
+	blk_cleanup_queue(zram->disk->queue);
+
 	del_gendisk(zram->disk);
 	put_disk(zram->disk);
 	kfree(zram);
