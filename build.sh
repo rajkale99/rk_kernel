@@ -24,7 +24,7 @@ IMG_DIR=$OUT_DIR/arch/arm64/boot/Image.gz-dtb
 DEFCONFIG=$KERNEL_DIR/arch/arm64/configs/rk_defconfig
 DEFCONFIG_NAME=rk_defconfig
 LOG_DIR=$KERNEL_DIR/logs
-NAME=RK_KERNEL
+NAME=RK_Kernel
 
 export CROSS_COMPILE=$CROSS_DIR/bin/aarch64-linux-android-
 export ARCH=arm64 && export SUBARCH=arm64
@@ -99,7 +99,7 @@ everything() {
 #main
 while true; do
 
-	echo -e "☆☆☆starting compilation for vimb kernel☆☆☆"
+	echo -e "☆☆☆starting compilation n"
 	echo -e "[1] do everything (will ask for confirmation for each step)"
 	echo -e "[2] just build"
 	echo -e "[3] regen defconfig"
